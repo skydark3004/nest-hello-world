@@ -45,4 +45,4 @@ jobs:
           --region=${{ secrets.REGION }} \
           --project=${{ secrets.PROJECT_ID }} \
           --port=3000
-          --set-env-vars=[NODE_ENV=${{ secrets.NODE_ENV }}]
+          --set-env-vars=[NODE_ENV=${{ env.NODE_ENV }}]
