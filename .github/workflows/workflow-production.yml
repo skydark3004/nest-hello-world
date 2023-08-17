@@ -1,0 +1,15 @@
+name: Build and Push to Google Cloud Run (Production)
+
+on:
+  push:
+    branches:
+      - "production"
+
+jobs:
+  build_deploy_prod:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build container image
+        run: |
+          echo "Building for production"
+          echo ${{ secrets.PROD_SECRET }}

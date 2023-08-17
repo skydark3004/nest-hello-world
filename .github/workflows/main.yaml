@@ -1,19 +1,22 @@
+name: Dynamic Workflow
+
 on:
-  workflow_dispatch:
-  pull_request:
-    branches:
-      - "develop"
   push:
     branches:
-      - "develop"
-      - "production"  # Thêm nhánh production vào đây
+      - "*"
 
 jobs:
-  my_job:
+  use_dynamic_workflow:
     runs-on: ubuntu-latest
     steps:
-      - name: Set NODE_ENV as Environment Variable
-        run: |
-          echo "NODE_ENV=${{ env.NODE_ENV }}" >> $GITHUB_ENV
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-          echo "Using NODE_ENV from Previous Job: $NODE_ENV"
+      - name: Determine workflow file based on branch
+        id: determine_workflow
+        run: echo "::set-output name=workflow_file::workflow-${GITHUB_REF#refs/heads/}.yml"
+
+      - name: Run dynamic workflow
+        uses: ./.github/actions/run-workflow
+        with:
+          workflow-file: ${{ steps.determine_workflow.outputs.workflow_file }}
