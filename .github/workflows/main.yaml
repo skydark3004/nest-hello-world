@@ -9,25 +9,6 @@ on:
       - "feature/*"  # Các nhánh feature
 
 jobs:
-  set_environment:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set Environment Variables
-        run: |
-          if [[ ${{ github.ref }} == 'refs/heads/develop' ]]; then
-            echo "ENVIRONMENT=DEV" >> $GITHUB_ENV
-            echo "ANOTHER_ENV=SharedValueForDev" >> $GITHUB_ENV
-            echo "YET_ANOTHER_ENV=AnotherSharedValueForDev" >> $GITHUB_ENV
-          elif [[ ${{ github.ref }} == 'refs/heads/production' ]]; then
-            echo "ENVIRONMENT=PRODUCTION" >> $GITHUB_ENV
-            echo "ANOTHER_ENV=SharedValueForProd" >> $GITHUB_ENV
-            echo "YET_ANOTHER_ENV=AnotherSharedValueForProd" >> $GITHUB_ENV
-          elif [[ ${{ github.ref }} == refs/heads/feature/* ]]; then
-            echo "ENVIRONMENT=FEATURE" >> $GITHUB_ENV
-            echo "ANOTHER_ENV=SharedValueForFeature" >> $GITHUB_ENV
-            echo "YET_ANOTHER_ENV=AnotherSharedValueForFeature" >> $GITHUB_ENV
-          fi
-
   build_deploy:
     needs: set_environment
     runs-on: ubuntu-latest
@@ -37,7 +18,7 @@ jobs:
 
       - name: Build and Deploy
         run: |
+          chmod +x generate-env.sh
+          ./generate-env.sh
+          cat generate-env.sh
           echo "Building and Deploying"
-          echo ${{ needs.set_environment.outputs.env }}
-          echo $ANOTHER_ENV
-          echo $YET_ANOTHER_ENV
