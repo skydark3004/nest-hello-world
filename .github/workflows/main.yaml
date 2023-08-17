@@ -19,5 +19,5 @@ jobs:
         run: |
           chmod +x generate-env.sh
           ./generate-env.sh
-          cat generate-env.sh
+          cat ./generate-env.sh
           echo "Building and Deploying"
