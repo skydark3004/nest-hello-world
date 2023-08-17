@@ -9,25 +9,23 @@ on:
       - "production"  # Thêm nhánh production vào đây
 
 jobs:
-  build_deploy_dev:
-    if: ${{ github.ref == 'refs/heads/develop' }}
+  set_environment:
     runs-on: ubuntu-latest
-    environment: DEV
     steps:
-      - name: Build container image
+      - name: Set Environment Variables
         run: |
-          echo "Building for development"
-          for var in $(compgen -e); do
-          value="${!var}"
-          echo "${var}: ${value}"
-          done
+          if [[ "${{ github.event.inputs.branch }}" == "develop" ]]; then
+            echo "ENVIRONMENT=DEV" >> $GITHUB_ENV
+          elif [[ "${{ github.event.inputs.branch }}" == "production" ]]; then
+            echo "ENVIRONMENT=PRODUCTION" >> $GITHUB_ENV
+          else
+            echo "ENVIRONMENT=OTHER" >> $GITHUB_ENV
+          fi
 
-  build_deploy_prod:
-    if: ${{ github.ref == 'refs/heads/production' }}
+  job_1:
+    needs: set_environment
     runs-on: ubuntu-latest
-    environment: PRODUCTION
     steps:
-      - name: Build container image
+      - name: Use Environment Variables
         run: |
-          echo "Building for production"
-          echo ${{vars}}
+          echo "Current Environment: $ENVIRONMENT"
