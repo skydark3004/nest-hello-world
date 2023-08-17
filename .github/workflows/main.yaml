@@ -1,4 +1,4 @@
-name: Build and Push to Google Cloud run
+name: Build and Push to Google Cloud Run
 
 on:
   workflow_dispatch:
@@ -8,15 +8,25 @@ on:
   push:
     branches:
       - "develop"
-jobs:
-  build_deploy:
-#    if: ${{ github.ref == 'refs/heads/main' }}
-    environment: DEV
+      - "production"  # Thêm nhánh production vào đây
 
+jobs:
+  build_deploy_dev:
+    if: ${{ github.ref == 'refs/heads/develop' }}
     runs-on: ubuntu-latest
+    environment: DEV
     steps:
       - name: Build container image
         run: |
-          echo ${{github.ref}}
-          echo ${{vars.test}}
-          echo ${{ secrets.REGION }}
+          echo "Building for development"
+          echo ${{vars.TEST}}
+
+  build_deploy_prod:
+    if: ${{ github.ref == 'refs/heads/production' }}
+    runs-on: ubuntu-latest
+    environment: PRODUCTION
+    steps:
+      - name: Build container image
+        run: |
+          echo "Building for production"
+          echo ${{vars.NODE_ENV}}
