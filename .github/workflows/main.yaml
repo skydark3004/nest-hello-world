@@ -5,28 +5,40 @@ on:
   pull_request:
     branches:
       - "develop"
-  push:
-    branches:
-      - "develop"
-      - "production"  # Thêm nhánh production vào đây
+      - "production"
 
 jobs:
-  build_deploy_dev:
-    if: ${{ github.ref == 'refs/heads/develop' }}
+  set_environment:
     runs-on: ubuntu-latest
-    environment: DEV
+    outputs:
+      env: ${{ steps.set_env.outputs.env }}
     steps:
-      - name: Build container image
+      - name: Set Environment Variables
+        id: set_env
         run: |
-          echo "Building for development"
-          echo ${{vars.TEST}}
+          if [[ ${{ github.ref }} == 'refs/heads/develop' ]]; then
+            echo "key1=key1dev" >> $GITHUB_ENV
+            echo "key2=key2dev" >> $GITHUB_ENV
+            echo "key3=key3dev" >> $GITHUB_ENV
+          elif [[ ${{ github.ref }} == 'refs/heads/production' ]]; then
+            echo "key1=key1prod" >> $GITHUB_ENV
+            echo "key2=key2prod" >> $GITHUB_ENV
+            echo "key3=key3prod" >> $GITHUB_ENV
+          fi
+          echo "key4=key4" >> $GITHUB_ENV
 
-  build_deploy_prod:
-    if: ${{ github.ref == 'refs/heads/production' }}
+  build_deploy:
+    needs: set_environment
     runs-on: ubuntu-latest
-    environment: PRODUCTION
     steps:
-      - name: Build container image
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build and Deploy
         run: |
-          echo "Building for production"
-          echo ${{vars.NODE_ENV}}
+          echo "Building and Deploying"
+          echo ${{ set_environment.outputs.env }}
+          echo $key1
+          echo $key2
+          echo $key3
+          echo $key4
