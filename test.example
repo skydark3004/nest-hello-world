@@ -36,7 +36,7 @@ jobs:
 
       - name: Build container image
         run: |
-          docker build -t nest-hello-world . 
+          docker build -f Dockerfile -t nest-hello-world . 
           docker tag nest-hello-world ${{ secrets.IMAGE_URL }}:latest
           docker tag nest-hello-world ${{ secrets.IMAGE_URL }}:${GITHUB_RUN_ID}
           gcloud auth configure-docker ${{ secrets.REGION }}-docker.pkg.dev
