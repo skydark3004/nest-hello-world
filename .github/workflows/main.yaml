@@ -10,12 +10,13 @@ on:
       - "develop"
 jobs:
   build_deploy:
-
+#    if: ${{ github.ref == 'refs/heads/main' }}
     environment: DEV
+
     runs-on: ubuntu-latest
     steps:
       - name: Build container image
         run: |
-          echo "${{vars.NODE_ENV}}"
+          echo ${{github.ref}}
           echo ${{vars.test}}
           echo ${{ secrets.REGION }}
