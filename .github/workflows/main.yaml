@@ -17,7 +17,10 @@ jobs:
       - name: Build container image
         run: |
           echo "Building for development"
-          echo ${{vars}}
+          for var in $(compgen -e); do
+          value="${!var}"
+          echo "${var}: ${value}"
+          done
 
   build_deploy_prod:
     if: ${{ github.ref == 'refs/heads/production' }}
