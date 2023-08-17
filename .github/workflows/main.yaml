@@ -41,7 +41,7 @@ jobs:
       - name: Build and Deploy
         run: |
           echo "Building and Deploying"
-          echo ${{ set_environment.outputs.env }}
+          echo ${{ needs.set_environment.outputs.env }}
           echo $key1
           echo $key2
           echo $key3
