@@ -6,6 +6,10 @@ on:
     branches:
       - "develop"
       - "production"
+  push: 
+    branches:
+      - "develop"
+      - "production"
 
 jobs:
   set_environment:
