@@ -13,10 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set NODE_ENV as Environment Variable
-        run: echo "NODE_ENV=${{ env.NODE_ENV }}" >> $GITHUB_ENV
-  another_job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Use NODE_ENV in Another Job
         run: |
+          echo "NODE_ENV=${{ env.NODE_ENV }}" >> $GITHUB_ENV
+
           echo "Using NODE_ENV from Previous Job: $NODE_ENV"
