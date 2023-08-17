@@ -2,34 +2,31 @@ name: Build and Push to Google Cloud Run
 
 on:
   workflow_dispatch:
-  pull_request:
+  push:
     branches:
       - "develop"
       - "production"
-  push: 
-    branches:
-      - "develop"
-      - "production"
+      - "feature/*"  # Các nhánh feature
 
 jobs:
   set_environment:
     runs-on: ubuntu-latest
-    outputs:
-      env: ${{ steps.set_env.outputs.env }}
     steps:
       - name: Set Environment Variables
-        id: set_env
         run: |
           if [[ ${{ github.ref }} == 'refs/heads/develop' ]]; then
-            echo "key1=key1dev" >> $GITHUB_ENV
-            echo "key2=key2dev" >> $GITHUB_ENV
-            echo "key3=key3dev" >> $GITHUB_ENV
+            echo "ENVIRONMENT=DEV" >> $GITHUB_ENV
+            echo "ANOTHER_ENV=SharedValueForDev" >> $GITHUB_ENV
+            echo "YET_ANOTHER_ENV=AnotherSharedValueForDev" >> $GITHUB_ENV
           elif [[ ${{ github.ref }} == 'refs/heads/production' ]]; then
-            echo "key1=key1prod" >> $GITHUB_ENV
-            echo "key2=key2prod" >> $GITHUB_ENV
-            echo "key3=key3prod" >> $GITHUB_ENV
+            echo "ENVIRONMENT=PRODUCTION" >> $GITHUB_ENV
+            echo "ANOTHER_ENV=SharedValueForProd" >> $GITHUB_ENV
+            echo "YET_ANOTHER_ENV=AnotherSharedValueForProd" >> $GITHUB_ENV
+          elif [[ ${{ github.ref }} == refs/heads/feature/* ]]; then
+            echo "ENVIRONMENT=FEATURE" >> $GITHUB_ENV
+            echo "ANOTHER_ENV=SharedValueForFeature" >> $GITHUB_ENV
+            echo "YET_ANOTHER_ENV=AnotherSharedValueForFeature" >> $GITHUB_ENV
           fi
-          echo "key4=key4" >> $GITHUB_ENV
 
   build_deploy:
     needs: set_environment
@@ -42,7 +39,5 @@ jobs:
         run: |
           echo "Building and Deploying"
           echo ${{ needs.set_environment.outputs.env }}
-          echo $key1
-          echo $key2
-          echo $key3
-          echo $key4
+          echo $ANOTHER_ENV
+          echo $YET_ANOTHER_ENV
