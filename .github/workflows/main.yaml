@@ -17,7 +17,8 @@ jobs:
 
       - name: Build and Deploy
         run: |
-          chmod +x generate-env.sh
-          ./generate-env.sh
-          cat ./generate-env.sh
-          echo "Building and Deploying"
+          env | grep -E "^[A-Za-z_][A-Za-z0-9_]*=" | while read -r line; do
+          key=$(echo "$line" | cut -d= -f1)
+          value=$(echo "$line" | cut -d= -f2-)
+          echo "${key}: \"${value}\"" >> $yaml_file
+          done
