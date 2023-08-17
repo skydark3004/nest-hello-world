@@ -16,5 +16,5 @@ jobs:
     steps:
       - name: Build container image
         run: |
-          echo "${{ env.NODE_ENV }}"
+          echo "$NODE_ENV"
           echo ${{ secrets.REGION }}
