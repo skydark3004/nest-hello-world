@@ -46,3 +46,38 @@ jobs:
           --project=${{ secrets.PROJECT_ID }} \
           --port=3000
           --set-env-vars=[NODE_ENV=${{ env.NODE_ENV }}]
+
+-----------------------------------------------
+
+name: Build and Push to Google Cloud Run
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - "develop"
+  push:
+    branches:
+      - "develop"
+      - "production"  # Thêm nhánh production vào đây
+
+jobs:
+  build_deploy_dev:
+    if: ${{ github.ref == 'refs/heads/develop' }}
+    runs-on: ubuntu-latest
+    environment: DEV
+    steps:
+      - name: Build container image
+        run: |
+          echo "Building for development"
+          echo ${{vars.TEST}}
+
+  build_deploy_prod:
+    if: ${{ github.ref == 'refs/heads/production' }}
+    runs-on: ubuntu-latest
+    environment: PRODUCTION
+    steps:
+      - name: Build container image
+        run: |
+          echo "Building for production"
+          echo ${{vars.NODE_ENV}}
