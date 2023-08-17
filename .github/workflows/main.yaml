@@ -10,7 +10,6 @@ on:
 
 jobs:
   build_deploy:
-    needs: set_environment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
