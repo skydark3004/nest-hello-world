@@ -44,7 +44,7 @@ jobs:
           --region=${{ secrets.REGION }} \
           --project=${{ secrets.PROJECT_ID }} \
           --port=${{ vars.PORT }}
-          --set-env-vars="${{ vars.ENV }}"
+          --set-env-vars="NODE_ENV=develop, OLD=15, CLASS=hihi"
 
 
 # case muốn push tag theo ID của github actions
