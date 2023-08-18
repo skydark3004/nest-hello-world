@@ -31,14 +31,14 @@ jobs:
 
       - name: Build container image
         run: |
-          docker build -f Dockerfile -t ${{secrets.IMAGE_NAME}} .
+          docker build -f Dockerfile -t ${{ secrets.IMAGE_NAME }} .
           docker tag ${{ secrets.IMAGE_NAME }} ${{ secrets.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.REPO_NAME }}/${{ secrets.IMAGE_NAME }}:latest
           gcloud auth configure-docker ${{ secrets.REGION }}-docker.pkg.dev
           docker push ${{ secrets.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.REPO_NAME }}/${{ secrets.IMAGE_NAME }} --all-tags
 
       - name: Deploy to Google Cloud
         run: |
-          gcloud run deploy nest-hello-world-service \
+          gcloud run deploy ${{ secrets.SERVICE_NAME }} \
           --image=${{ secrets.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.REPO_NAME }}/${{ secrets.IMAGE_NAME }}:latest \
           --allow-unauthenticated \
           --region=${{ secrets.REGION }} \
