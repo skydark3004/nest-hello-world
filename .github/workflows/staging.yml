@@ -1,4 +1,4 @@
-name: Build and Push to Google Cloud run (Staging Enviroment)
+name: staging
 
 on:
   workflow_dispatch:
