@@ -2,12 +2,12 @@ name: staging
 
 on:
   workflow_dispatch:
-  pull_request:
+  #  pull_request:
+  #    branches:
+  #      - 'staging'
+  push:
     branches:
       - 'staging'
-#  push:
-#    branches:
-#      - 'staging'
 jobs:
   build_deploy:
     environment: DEV
