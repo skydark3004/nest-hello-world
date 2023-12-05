@@ -1,10 +1,10 @@
-name: Build and Push to Google Cloud run (Develop Enviroment)
+name: develop
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches:
-      - "develop"
+#  pull_request:
+#    branches:
+#      - "develop"
   push:
     branches:
       - "develop"
@@ -21,4 +21,4 @@ jobs:
         id: EXPORT_VARIABLE
         shell: bash
         run: |
-          echo "message: ${{github.event.head_commit.message}}"
+          echo "develop"
