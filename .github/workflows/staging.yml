@@ -1,13 +1,13 @@
-name: Build and Push to Google Cloud run (Develop Enviroment)
+name: Build and Push to Google Cloud run (Staging Enviroment)
 
 on:
   workflow_dispatch:
   pull_request:
     branches:
-      - "develop"
+      - "staging"
   push:
     branches:
-      - "develop"
+      - "staging"
 jobs:
   build_deploy:
 
