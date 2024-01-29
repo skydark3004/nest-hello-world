@@ -27,7 +27,16 @@ jobs:
           EOF
 
       - name: test json
-        run: cat firebase.json
+        run: cat ./firebase.json
+
+      - name: Create Firebase JSON
+        run: |
+          cat <<EOF > firebase1.json
+          123123123123123
+          EOF
+
+      - name: test json
+        run: cat ./firebase1.json
 
 
 #      - id: 'auth'
